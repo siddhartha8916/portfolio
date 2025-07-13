@@ -263,6 +263,78 @@
       });
     </script>
 
+    <!-- Contact Form JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const buttonText = document.getElementById('button-text');
+        const loadingText = document.getElementById('loading-text');
+        const formStatus = document.getElementById('form-status');
+
+        contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Show loading state
+          submitBtn.disabled = true;
+          buttonText.classList.add('hidden');
+          loadingText.classList.remove('hidden');
+          loadingText.classList.add('flex');
+          formStatus.classList.add('hidden');
+
+          try {
+            const formData = new FormData(contactForm);
+            const response = await fetch(contactForm.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+
+            if (response.ok) {
+              // Success
+              showMessage('success', 'Thank you! Your message has been sent successfully. I\'ll get back to you soon!');
+              contactForm.reset();
+            } else {
+              // Error
+              showMessage('error', 'Oops! There was a problem sending your message. Please try again or email me directly.');
+            }
+          } catch (error) {
+            // Network error
+            showMessage('error', 'Network error. Please check your connection and try again.');
+          } finally {
+            // Reset button state
+            submitBtn.disabled = false;
+            buttonText.classList.remove('hidden');
+            buttonText.classList.add('flex');
+            loadingText.classList.add('hidden');
+            loadingText.classList.remove('flex');
+          }
+        });
+
+        function showMessage(type, message) {
+          const isSuccess = type === 'success';
+          const bgColor = isSuccess ? 'bg-emerald-500/20' : 'bg-red-500/20';
+          const textColor = isSuccess ? 'text-emerald-400' : 'text-red-400';
+          const borderColor = isSuccess ? 'border-emerald-500/30' : 'border-red-500/30';
+          const icon = isSuccess ? 
+            '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' :
+            '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>';
+
+          formStatus.innerHTML = `
+            <div class="flex items-center gap-3 p-4 rounded-xl ${bgColor} border ${borderColor}">
+              <div class="${textColor}">
+                ${icon}
+              </div>
+              <p class="${textColor} font-medium">${message}</p>
+            </div>
+          `;
+          formStatus.classList.remove('hidden');
+        }
+      });
+    </script>
+
     <main class="pt-20">
       <!-- Hero -->
       <section
@@ -1280,6 +1352,42 @@
                         </div>
                       </a>
 
+                      <!-- Phone -->
+                      <a href="tel:+916204415467" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 group/contact">
+                        <div class="w-12 h-12 bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center group-hover/contact:scale-110 transition-transform">
+                          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <h5 class="text-white font-semibold mb-1">Phone</h5>
+                          <p class="text-cyan-400 group-hover/contact:text-cyan-300 transition-colors">+91-6204415467</p>
+                        </div>
+                        <div class="ml-auto">
+                          <svg class="w-5 h-5 text-slate-400 group-hover/contact:text-cyan-400 group-hover/contact:translate-x-1 transition-all" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                          </svg>
+                        </div>
+                      </a>
+
+                      <!-- WhatsApp -->
+                      <a href="https://wa.me/916204415467?text=Hi%20Siddhartha%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20connect!" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 group/contact">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-green-600 rounded-xl flex items-center justify-center group-hover/contact:scale-110 transition-transform">
+                          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                          </svg>
+                        </div>
+                        <div>
+                          <h5 class="text-white font-semibold mb-1">WhatsApp</h5>
+                          <p class="text-green-400 group-hover/contact:text-green-300 transition-colors">Message me directly</p>
+                        </div>
+                        <div class="ml-auto">
+                          <svg class="w-5 h-5 text-slate-400 group-hover/contact:text-green-400 group-hover/contact:translate-x-1 transition-all" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                          </svg>
+                        </div>
+                      </a>
+
                       <!-- LinkedIn -->
                       <a href="https://www.linkedin.com/in/siddhartha-kumar-a85a5a145/" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-slate-800/50 hover:bg-slate-700/50 transition-all duration-300 group/contact">
                         <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center group-hover/contact:scale-110 transition-transform">
@@ -1375,45 +1483,60 @@
                       <h4 class="text-2xl font-bold text-white">Quick Message</h4>
                     </div>
 
-                    <form class="space-y-6">
+                    <form action="https://formspree.io/f/xzzvprkd" method="POST" class="space-y-6" id="contact-form">
                       <!-- Name -->
                       <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
-                        <input type="text" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300" placeholder="Enter your name">
+                        <label for="name" class="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300" placeholder="Enter your name">
                       </div>
 
                       <!-- Email -->
                       <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-                        <input type="email" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300" placeholder="your@email.com">
+                        <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300" placeholder="your@email.com">
                       </div>
 
                       <!-- Subject -->
                       <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Subject</label>
-                        <select class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300">
-                          <option>Project Collaboration</option>
-                          <option>Job Opportunity</option>
-                          <option>Technical Consultation</option>
-                          <option>General Inquiry</option>
+                        <label for="subject" class="block text-sm font-medium text-slate-300 mb-2">Subject</label>
+                        <select id="subject" name="subject" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300">
+                          <option value="">Select a subject</option>
+                          <option value="Project Collaboration">Project Collaboration</option>
+                          <option value="Job Opportunity">Job Opportunity</option>
+                          <option value="Technical Consultation">Technical Consultation</option>
+                          <option value="General Inquiry">General Inquiry</option>
                         </select>
                       </div>
 
                       <!-- Message -->
                       <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2">Message</label>
-                        <textarea rows="5" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300 resize-none" placeholder="Tell me about your project or opportunity..."></textarea>
+                        <label for="message" class="block text-sm font-medium text-slate-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600/30 rounded-xl text-white placeholder-slate-400 focus:border-purple-400/50 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all duration-300 resize-none" placeholder="Tell me about your project or opportunity..."></textarea>
                       </div>
 
+                      <!-- Hidden field for your email -->
+                      <input type="hidden" name="_to" value="siddhartha8916@gmail.com">
+                      <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission">
+                      <input type="hidden" name="_next" value="thank-you">
+
+                      <!-- Status Messages -->
+                      <div id="form-status" class="hidden"></div>
+
                       <!-- Submit Button -->
-                      <button type="submit" class="w-full glass-effect px-8 py-4 rounded-xl text-white font-semibold hover:glow-border transition-all duration-300 group/btn relative overflow-hidden">
+                      <button type="submit" id="submit-btn" class="w-full glass-effect px-8 py-4 rounded-xl text-white font-semibold hover:glow-border transition-all duration-300 group/btn relative overflow-hidden">
                         <!-- Gradient background that appears on hover -->
                         <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 rounded-xl"></div>
-                        <span class="relative flex items-center justify-center gap-3">
+                        <span class="relative flex items-center justify-center gap-3" id="button-text">
                           <svg class="w-5 h-5 group-hover/btn:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
                           </svg>
                           Send Message
+                        </span>
+                        <span class="relative hidden items-center justify-center gap-3" id="loading-text">
+                          <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                          </svg>
+                          Sending...
                         </span>
                       </button>
                     </form>
